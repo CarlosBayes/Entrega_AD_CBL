@@ -31,26 +31,20 @@ set.seed(42)
 datos_numericos <- mvrnorm(150, mu = media, Sigma = covarianza)
 ```
 
-Realizamos ajustes en la media de horas diarias y la edad para que no se den resultados incoherentes por si acaso:
-```{r}
-datos_numericos[,1] <- pmin(pmax(round(datos_numericos[,4], 1), 0), 16)
-datos_numericos[,2] <- pmin(pmax(round(datos_numericos[,4], 1), 17), 100)
-```
-
 Con esto, construimos la primera tabla de datos:
 ```{r}
-datos_RRSS <- data.frame(
-  horas_redes_dia = round(datos_numericos[,1], 1),
-  edad = round(datos_numericos[,2], 1),
-  cantidad_seguidores = round(datos_numericos[,3],1),
-  cantidad_publicaciones = round(datos_numericos[,4],1),
+datos_RRSS_1 <- data.frame(
+  horas_redes_dia = round(datos_numericos[,1]),
+  edad = round(datos_numericos[,2]),
+  cantidad_seguidores = round(datos_numericos[,3]),
+  cantidad_publicaciones = round(datos_numericos[,4]),
   sexo = sample(c("Hombre", "Mujer"), 150, replace = TRUE),
   red_mas_usada = sample(c("Instagram", "X", "You Tube", "Otra"), 150, replace = TRUE),
   frecuencia_publicacion = ordered(sample(1:5, 150, replace = TRUE), labels = c("Nunca", "Anual", "Mensula", "Semanal", "Diario")),
   limitacion_activa = ordered(sample(1:5, 150, replace = TRUE), labels = c("Nada", "Poco", "Regular", "Frecuente", "Muy Frecuente")),
   frecuencia_afectacion_diaria = ordered(sample(1:5, 150, replace = TRUE), labels = c("Nada", "Poco", "Regular", "Frecuente", "Muy Frecuente"))
 )
-head(datos_RRSS)
+head(datos_RRSS_1)
 ```
 
 Ahora creamos la segunda tabla. Al no encontrar datos en internet que se ajusten adecuadamente a la simulación que se propone, se hará uso de una encuesta realizada en la UIB el curso pasado a modo de proyecto para la asignatura de "Estadística", que trataba temas similares y en la que está inspirada esta misma práctica. La encuesta fue realizada por un equipo al cual el autor pertenecía, con lo cual no se están usando dichos datos de manera ilícita. Dicho esto. tomaremos las variables de las preguntas sobre los sentimientos FOMO y sobre si los perfiles en RRSS de los individuos son públicos o privados. Creémosla:
@@ -59,6 +53,11 @@ datos_tabla2 <- read.csv("C:/Users/34663/Desktop/Entrega_AD_CBL/Copia de El Rol 
 datos_RRSS_2 <- datos_tabla2[1:150, c("X.Has.experimentado.alguna.vez.sentimientos.de.FOMO..miedo.a.perderse.algo..al.ver.las.publicaciones.de.otras.personas.en.redes.sociales.", "En.la.red.social.que.más.seguidores.tengas...tu.perfil.es.público.o.privado.")]
 colnames(datos_RRSS_2) <- c("experimentacion_FOMO", "privacidad_perfil")
 head(datos_RRSS_2)
+```
+A partir de estas dos tablas creadas, crearemos la tabla a partir de la cual realizaremos el estudio estadístico:
+```{r}
+datos_RRSS <- cbind(datos_RRSS_1,datos_RRSS_2)
+head(datos_RRSS)
 ```
 
 
