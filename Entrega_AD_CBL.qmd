@@ -31,4 +31,25 @@ set.seed(42)
 datos_numericos <- mvrnorm(150, mu = media, Sigma = covarianza)
 ```
 
+Realizamos ajustes en la media de horas diarias y la edad para que no se den resultados incoherentes por si acaso:
+```{r}
+datos_numericos[,1] <- pmin(pmax(round(datos_numericos[,4], 1), 0), 16)
+datos_numericos[,2] <- pmin(pmax(round(datos_numericos[,4], 1), 17), 100)
+```
+
+Con esto, construimos la primera tabla de datos:
+```{r}
+datos_RRSS <- data.frame(
+  horas_redes_dia = round(datos_numericos[,1], 1),
+  edad = round(datos_numericos[,2], 1),
+  cantidad_seguidores = round(datos_numericos[,3],1),
+  cantidad_publicaciones = round(datos_numericos[,4],1),
+  sexo = sample(c("Hombre", "Mujer"), 150, replace = TRUE),
+  red_mas_usada = sample(c("Instagram", "X", "You Tube", "Otra"), 150, replace = TRUE),
+  frecuencia_publicacion = ordered(sample(1:5, 150, replace = TRUE), labels = c("Nunca", "Anual", "Mensula", "Semanal", "Diario")),
+  limitacion_activa = ordered(sample(1:5, 150, replace = TRUE), labels = c("Nada", "Poco", "Regular", "Frecuente", "Muy Frecuente")),
+  frecuencia_afectacion_diaria = ordered(sample(1:5, 150, replace = TRUE), labels = c("Nada", "Poco", "Regular", "Frecuente", "Muy Frecuente"))
+)
+
+```
 
