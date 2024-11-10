@@ -1,28 +1,16 @@
 ---
 title: "Entrega_AD"
+author: "Carlos Bayés"
 format: html
 editor: visual
 Rendering:
     embed-resources: true
 ---
 
-## Quarto
+## Primer paso
+Queremos estudiar como afecta a la salud mental de los universitarios las redes sociales de manera simulada. Para ello a cada individuo le mediremos la cantidad de horas al día que pasa en las RRSS., su edad, la red social más usada y la sensación de estar perdiendo el tiempo entre otras.
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
-## Running Code
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
 
-```{r}
-1 + 1
-```
 
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
