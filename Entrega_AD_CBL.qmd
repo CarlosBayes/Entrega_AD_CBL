@@ -53,3 +53,5 @@ datos_RRSS <- data.frame(
 
 ```
 
+Ahora creamos la segunda tabla. Al no encontrar datos en internet que se ajusten adecuadamente a la simulación que se propone, se hará uso de una encuesta realizada en la UIB el curso pasado a modo de proyecto para la asignatura de "Estadística", que trataba temas similares y en la que está inspirada esta misma práctica. La encuesta fue realizada por un equipo al cual el autor pertenecía, con lo cual no se están usando dichos datos de manera ilícita.
+
