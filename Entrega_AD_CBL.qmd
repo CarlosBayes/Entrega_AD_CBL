@@ -50,8 +50,15 @@ datos_RRSS <- data.frame(
   limitacion_activa = ordered(sample(1:5, 150, replace = TRUE), labels = c("Nada", "Poco", "Regular", "Frecuente", "Muy Frecuente")),
   frecuencia_afectacion_diaria = ordered(sample(1:5, 150, replace = TRUE), labels = c("Nada", "Poco", "Regular", "Frecuente", "Muy Frecuente"))
 )
-
+head(datos_RRSS)
 ```
 
-Ahora creamos la segunda tabla. Al no encontrar datos en internet que se ajusten adecuadamente a la simulación que se propone, se hará uso de una encuesta realizada en la UIB el curso pasado a modo de proyecto para la asignatura de "Estadística", que trataba temas similares y en la que está inspirada esta misma práctica. La encuesta fue realizada por un equipo al cual el autor pertenecía, con lo cual no se están usando dichos datos de manera ilícita.
+Ahora creamos la segunda tabla. Al no encontrar datos en internet que se ajusten adecuadamente a la simulación que se propone, se hará uso de una encuesta realizada en la UIB el curso pasado a modo de proyecto para la asignatura de "Estadística", que trataba temas similares y en la que está inspirada esta misma práctica. La encuesta fue realizada por un equipo al cual el autor pertenecía, con lo cual no se están usando dichos datos de manera ilícita. Dicho esto. tomaremos las variables de las preguntas sobre los sentimientos FOMO y sobre si los perfiles en RRSS de los individuos son públicos o privados. Creémosla:
+```{r}
+datos_tabla2 <- read.csv("C:/Users/34663/Desktop/Entrega_AD_CBL/Copia de El Rol de las Redes Sociales en la Salud Mental (respuestas) - Respuestas de formulario 1.csv")
+datos_RRSS_2 <- datos_tabla2[1:150, c("X.Has.experimentado.alguna.vez.sentimientos.de.FOMO..miedo.a.perderse.algo..al.ver.las.publicaciones.de.otras.personas.en.redes.sociales.", "En.la.red.social.que.más.seguidores.tengas...tu.perfil.es.público.o.privado.")]
+colnames(datos_RRSS_2) <- c("experimentacion_FOMO", "privacidad_perfil")
+head(datos_RRSS_2)
+```
+
 
