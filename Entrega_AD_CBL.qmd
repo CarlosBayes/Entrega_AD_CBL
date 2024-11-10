@@ -10,7 +10,16 @@ Rendering:
 ## Primer paso
 Queremos estudiar como afecta a la salud mental de los universitarios las redes sociales de manera simulada. Para ello a cada individuo le mediremos la cantidad de horas al día que pasa en las RRSS., su edad, la red social más usada y la sensación de estar perdiendo el tiempo entre otras.
 
+##Segundo paso
+Creamos las medias por individuo y la matriz de covarianzas de las variables cuantitativas de la simulación:
 
-
+```{r}
+media <- c(5,20,350,10) #Media de horas_redes_día, edad, cantidad_seguidores, cantidad_publicaciones
+covarianza <- matrix(c(4, -2.5, 50, 3,
+                       -2.5, 10, 30, 1.5,
+                       50, 30, 100, 20,
+                       3, 1.5, 20, 15), 
+                     nrow = 4, ncol = 4)
+```
 
 
