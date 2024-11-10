@@ -2,6 +2,8 @@
 title: "Entrega_AD"
 format: html
 editor: visual
+Rendering:
+    embed-resources: true
 ---
 
 ## Quarto
