@@ -12,7 +12,7 @@ library(tidyverse)
 ```
 
 # Primer paso
-Queremos estudiar como afecta a la salud mental de los universitarios las redes sociales de manera simulada. Para ello a cada individuo le mediremos la cantidad de horas al día que pasa en las RRSS., su edad, la cantidad de seguidores promedio en las redes sociales, la cantidad de publicaciones en las redes, el sexo de los individuos, la red social más usada, la frecuencia con la que se publica en redes, la limitación del tiempo en RRSS de cada individuo de manera consciente y la frecuencia con la que las redes afectan en la vida diaria de los individuos. Se recalca que la mayoría de los datos están simulados por R, así que estos no tienen por qué corresponderse con la realidad, aunque las conclusiones se harán como si se tratase de la realidad. Además, debido a la longitud del proyecto se aclara que no se harán todos los estudios de correlación y análisis multivariante posibles debido a la gran cantidad de variables. En este estudio se han realizado, en concreto, $3$ análisis, que se consideran los más interesantes a nivel subjetivo. La motivación de dichos análisis viene explicada con cada uno el la sección $Tercer paso$.
+Queremos estudiar como afecta a la vida diaria de los universitarios las redes sociales de manera simulada. Para ello, a cada individuo le mediremos la cantidad de horas al día que pasa en las RRSS, su edad, la cantidad de seguidores promedio en las redes sociales, la cantidad de publicaciones en las redes, el sexo de los individuos, la red social más usada, la frecuencia con la que se publica en redes, la limitación del tiempo en RRSS de cada individuo de manera consciente y la frecuencia con la que creen losindividuos que las redes afectan en su vida. Se recalca que la mayoría de los datos están simulados por R, así que estos no tienen por qué corresponderse con la realidad, aunque las conclusiones se harán como si se tratase de la realidad. Además, debido a la longitud del proyecto se aclara que no se harán todos los estudios de correlación y análisis multivariante posibles debido a la gran cantidad de variables. En este estudio se han realizado, en concreto, $3$ análisis, que se consideran los más interesantes a nivel subjetivo. La motivación de dichos análisis viene explicada con cada uno en la sección $Tercer paso$. 
 
 # Segundo paso
 Creamos las medias por individuo y la matriz de covarianzas de las variables cuantitativas de la simulación:
@@ -48,7 +48,8 @@ datos_RRSS_1 <- data.frame(
 head(datos_RRSS_1)
 ```
 
-Ahora creamos la segunda tabla. Al no encontrar datos en internet que se ajusten adecuadamente a la simulación que se propone, se hará uso de una encuesta realizada en la UIB el curso pasado a modo de proyecto para la asignatura de "Estadística", que trataba temas similares y en la que está inspirada esta misma práctica. La encuesta fue realizada por un equipo al cual el autor pertenecía, con lo cual no se están usando dichos datos de manera ilícita. Dicho esto. tomaremos las variables de las preguntas sobre los sentimientos FOMO y sobre si los perfiles en RRSS de los individuos son públicos o privados. Creémosla:
+Ahora creamos la segunda tabla. Al no encontrar datos en internet que se ajusten adecuadamente a la simulación que se propone, se hará uso de una encuesta realizada en la UIB el curso pasado a modo de proyecto para la asignatura de "Estadística", que trataba temas similares y en la que está inspirada esta misma práctica. La encuesta fue realizada por un equipo al cual el autor (Carlos Bayés) pertenecía, con lo cual no se están usando dichos datos de manera ilícita. Dicho esto, tomaremos las variables de las preguntas sobre los sentimientos FOMO y sobre si los perfiles en RRSS de los individuos son públicos o privados. Creémosla:\\
+(Aclaración: El FOMO, "Fear Of Missing Out" en inglés, es el miedo a perderse eventos en la vida, lo que conlleva a la sensación de no estar aprovechando el tiempo. Esto es de interés medirlo ya que al ver lo que está subido en perfiles de otras personas, podemos caer en estos sentimientos, ya que, por lo general, la gente únicamente proyecta la parte buena de su vida en redes.)
 ```{r}
 datos_tabla2 <- read.csv("C:/Users/34663/Desktop/Entrega_AD_CBL/Copia de El Rol de las Redes Sociales en la Salud Mental (respuestas) - Respuestas de formulario 1.csv")
 datos_RRSS_2 <- datos_tabla2[1:150, c("X.Has.experimentado.alguna.vez.sentimientos.de.FOMO..miedo.a.perderse.algo..al.ver.las.publicaciones.de.otras.personas.en.redes.sociales.", "En.la.red.social.que.más.seguidores.tengas...tu.perfil.es.público.o.privado.")]
@@ -64,7 +65,7 @@ head(datos_RRSS)
 # Tercer paso
 
 ## Primera correlación
-Lo primero que queremos estudiar es la relación entre la expirementación de FOMO con las horas gastadas en RRSS por cada inidividuo. Para ello, al ser las respuestas a la pregunta sobre el FOMO "Sí" o "No", podemos codificarlas con valores numéricos, es decir, a cada "Sí" le asociamos un $1$ y a cada "No" le asociamos un $0$:
+Lo primero que queremos estudiar es la relación entre la expirementación de FOMO con las horas gastadas en RRSS por cada inidividuo. Esto es de interés ya que nos permite ver hasta qué punto, el tiempo de consumo de RRSS influye en una parte de la salud mental de los individuos. Para ello, al ser las respuestas a la pregunta sobre el FOMO "Sí" o "No", podemos codificarlas con valores numéricos, es decir, a cada "Sí" le asociamos un $1$ y a cada "No" le asociamos un $0$:
 ```{r}
 datos_RRSS <- datos_RRSS %>%
   mutate(FOMO_numerico = case_when(
@@ -79,7 +80,7 @@ cor.test(datos_RRSS$horas_redes_dia, datos_RRSS$FOMO_numerico)
 ```
 Podemos ver que la correlación es bastante crecana a $0$, por tanto, no hay correlación aparente entre la cantidad de horas gastadas en las redes sociales y la experimentación de FOMO.\\
 ## Segunda correlación
-Ahora nos interesa ver si hay relación entre las horas en RRSS con cuanto creen los individuos observados que las RRSS afectan su vida. Para ello graficaremos los resultados:
+Ahora nos interesa ver si hay relación entre las horas en RRSS con cuanto creen los individuos observados que las RRSS afectan su vida. La motivación de estudiar dicaha relación viene dada por razones similares a las de la correlación anterior; cuál es el grado en el que los individuos creen que las RRSS influyen en su vida. Para ello graficaremos los resultados:
 ```{r}
 ggplot(datos_RRSS, aes(x = limitacion_activa, y = horas_redes_dia)) +
   geom_boxplot(fill = "skyblue", color = "darkblue") +
@@ -95,7 +96,7 @@ summary(anova1)
 Como vemos, el p-valor es $0.604$, que es bastante más que nuestro nivel de significancia. De aquí se puede deducir, como ya mostraba el boxplot, que no hay relación entre la cantidad de horas gastadas en RRSS y como le afectan las RRSS a cada individuo en su vida diaria.\\
 
 ## Tercera correlación
-Además, vamos a ver la influencia entre si el perfil es público o privado y cuanto se limitan activamente las RRSS. Veamos primero un gráfico de barras:
+Además, vamos a ver la influencia entre si el perfil es público o privado y cuanto se limitan activamente las RRSS. La intención de este punto es ver si las personas que mantienen su perfil en redes privado tratan de que las redes no le afecten o le afecten menos en su defecto en comparación a las personas con un perfil público. A su vez también se puede ver la si hay una tendencia entre los individuos en genral de tomar medidas contra gastar demasiado tiempo en redes sociales. Veamos primero un gráfico de barras:
 ```{r}
 ggplot(datos_RRSS, aes(x = privacidad_perfil, fill = limitacion_activa)) +
   geom_bar(position = "fill") +  
@@ -128,6 +129,6 @@ tabla_contingencia_2 <- table(datos_RRSS$privacidad_perfil, datos_RRSS$limitacio
 print(tabla_contingencia_2)
 chisq.test(tabla_contingencia_2)
 ```
-Como vemos, el p-valor en este caso es $0.4894$, que sifue siendo mayor a $0.05$, por tanto, aún con esta clasificación, podemos asegurar que no existe una relación significativa entre haber tomado alguna medida de limitación de consumo y el tipo de perfil de cada idividuo.
+Como vemos, el p-valor en este caso es $0.4894$, que sigue siendo mayor a $0.05$, por tanto, aún con esta clasificación, podemos asegurar que no existe una relación significativa entre haber tomado alguna medida de limitación de consumo y el tipo de perfil de cada idividuo.
 
 # Cuarto paso
