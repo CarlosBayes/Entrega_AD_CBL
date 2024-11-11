@@ -8,12 +8,13 @@ Rendering:
 ---
 ```{r}
 library(MASS)
+library(tidyverse)
 ```
 
 ## Primer paso
 Queremos estudiar como afecta a la salud mental de los universitarios las redes sociales de manera simulada. Para ello a cada individuo le mediremos la cantidad de horas al día que pasa en las RRSS., su edad, la red social más usada y la sensación de estar perdiendo el tiempo entre otras.
 
-##Segundo paso
+## Segundo paso
 Creamos las medias por individuo y la matriz de covarianzas de las variables cuantitativas de la simulación:
 
 ```{r}
@@ -60,4 +61,19 @@ datos_RRSS <- cbind(datos_RRSS_1,datos_RRSS_2)
 head(datos_RRSS)
 ```
 
+## Tercer paso
+Lo primero que queremos estudiar es la relación entre la expirementación de FOMO con las horas gastadas en RRSS por cada inidividuo. Para ello, al ser las respuestas a la pregunta sobre el FOMO "Sí" o "No", podemos codificarlas con valores numéricos, es decir, a cada "Sí" le asociamos un $1$ y a cada "No" le asociamos un $0$:
+```{r}
+datos_RRSS <- datos_RRSS %>%
+  mutate(fomo_num = case_when(
+    experimentacion_FOMO == "Sí" ~ 1,
+    experimentacion_FOMO == "No" ~ 0,
+  ))
+```
+
+En este caso, al tener una variable cuantitativa (las horas en RRSS), y una binaria, (la experimentación del FOMO), un test de correlación se ajusta a nuestras necesidades:
+```{r}
+cor.test(datos_RRSS$horas_redes_dia, datos_RRSS$fomo_num)
+```
+Como vemos, el test da un resultado muy cercano a $0$, por tanto, no hay una correlación aparente entre las horas gastadas en redes y el FOMO. De igual manera, trataremos de representar esto en un gráfico para verlo con más claridad:
 
