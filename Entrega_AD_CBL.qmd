@@ -132,3 +132,19 @@ chisq.test(tabla_contingencia_2)
 Como vemos, el p-valor en este caso es $0.4894$, que sigue siendo mayor a $0.05$, por tanto, aún con esta clasificación, podemos asegurar que no existe una relación significativa entre haber tomado alguna medida de limitación de consumo y el tipo de perfil de cada idividuo.
 
 # Cuarto paso
+La intención es modelizar la variable red_mas_usada.Primero calculemos las proporciones de cada categoría de la variable:
+```{r}
+proporciones_red <- datos_RRSS %>% count(red_mas_usada) %>% mutate(probabilidad = n / sum(n))
+```
+Vamos a tomar las 20 primeras observaciones de la tabla datos_RRSS y ver la frecuencia de cada categoría de la variable de estas 20 observaciones:
+```{r}
+datos_RRSS_primeras20 <- datos_RRSS %>% slice(1:20)
+conteo_frecuencias <- datos_RRSS_primeras20 %>% count(red_mas_usada) %>% pull(n)
+```
+Ahora tomamos las probabilidades de cada categoría y construimos la distribución:
+```{r}
+probabilidades <- proporciones_red$probabilidad
+distribucion <- dmultinom(x = conteo_frecuencias, prob = probabilidades)
+print(distribucion)
+```
+# Quinto paso
