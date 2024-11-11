@@ -73,7 +73,7 @@ datos_RRSS <- datos_RRSS %>%
   ))
 ```
 
-En este caso, al tener una variable cuantitativa (las horas en RRSS), y una binaria, (la experimentación del FOMO), un test de correlación se ajusta a nuestras necesidades:
+En este caso, al tener una variable cuantitativa (las horas en RRSS), y una binaria, (la experimentación del FOMO), un test de correlación se ajusta a nuestras necesidades, ya que son dos variables cuantitativas:
 ```{r}
 cor.test(datos_RRSS$horas_redes_dia, datos_RRSS$FOMO_numerico)
 ```
@@ -87,7 +87,7 @@ ggplot(datos_RRSS, aes(x = limitacion_activa, y = horas_redes_dia)) +
        title = "Distribución de Horas en Redes Sociales según Frecuencia de Afectación Diaria") +
   theme_minimal()
 ```
-Vemos que aparentemente en esta simulación, las horas están distribuidas homogéneamente entre las distintas categorías, dando a entender que tampoco podemos asegurar una correlación en este caso. De igual manera realizaremos un test ANOVA tomando un nivel de significancia del $0.05$ para ver si esto es cierto.
+Vemos que aparentemente en esta simulación, las horas están distribuidas homogéneamente entre las distintas categorías, dando a entender que tampoco podemos asegurar una correlación en este caso. De igual manera realizaremos un test ANOVA tomando un nivel de significancia del $0.05$ para ver si esto es cierto, al estar tratando con una variable cuantitativa y otra categórica.
 ```{r}
 anova1 = aov(horas_redes_dia ~ frecuencia_afectacion_diaria, data = datos_RRSS)
 summary(anova1)
@@ -105,4 +105,29 @@ ggplot(datos_RRSS, aes(x = privacidad_perfil, fill = limitacion_activa)) +
   ggtitle("Distribución de Niveles de Limitación Activa por Tipo de Privacidad") +
   theme_minimal()
 ```
-Podemos ver que entre los que tienen un perfil público, tienen cierta tendencia a limitar su consumo de las RRSS de manera regular, pero a su vez, también se observa que dentro de este grupo, hay una cantidad aparentemente significativa de individuos que no se limitan a la hora de consumir dichas redes. Por otra parte, dentro de los que tienen el perfil privado, son menos los que no toman ninguna medida de control. Así mismo, se puede ver que la gran mayoría de individuos sí que han limitado su tiempo en redes, aunque dicha limitación haya sido poca.
+Podemos ver que entre los que tienen un perfil público, tienen cierta tendencia a limitar su consumo de las RRSS de manera regular, pero a su vez, también se observa que dentro de este grupo, hay una cantidad aparentemente significativa de individuos que no se limitan a la hora de consumir dichas redes. Por otra parte, dentro de los que tienen el perfil privado, son menos los que no toman ninguna medida de control. Así mismo, se puede ver que la gran mayoría de individuos sí que han limitado su tiempo en redes, aunque dicha limitación haya sido poca. Aún así, al tratarse de dos variables categóricas, realizaremos un test de independencia chi cuadrado:
+```{r}
+tabla_contingencia_1 <- table(datos_RRSS$privacidad_perfil, datos_RRSS$limitacion_activa)
+print(tabla_contingencia_1)
+chisq.test(tabla_contingencia_1)
+```
+Vemos que el p-valor es mayor que $0.05$, lo que quiere decir que aparentemente no existe relación significativa entre el tipo de perfil y las medidas de limitación de consumo de RRSS. De igual manera, es interesante separar a los individuos entre los que nunca han tomado alguna medida limitante y los que no. Para ello creemos otra columna en datos_RRSS que realice dicha clasificación:
+```{r}
+datos_RRSS <- datos_RRSS %>%
+  mutate(limitacion_alguna_vez = case_when(
+    limitacion_activa == "Nada" ~ "No",
+    limitacion_activa == "Poco" ~ "Sí",
+    limitacion_activa == "Regular" ~ "Sí",
+    limitacion_activa == "Frecuente" ~ "Sí",
+    limitacion_activa == "Muy frecuente" ~ "Sí",
+  ))
+```
+Una vez creada la columna, realizamos el test:
+```{r}
+tabla_contingencia_2 <- table(datos_RRSS$privacidad_perfil, datos_RRSS$limitacion_alguna_vez)
+print(tabla_contingencia_2)
+chisq.test(tabla_contingencia_2)
+```
+Como vemos, el p-valor en este caso es $0.4894$, que sifue siendo mayor a $0.05$, por tanto, aún con esta clasificación, podemos asegurar que no existe una relación significativa entre haber tomado alguna medida de limitación de consumo y el tipo de perfil de cada idividuo.
+
+# Cuarto paso
