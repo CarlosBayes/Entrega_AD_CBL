@@ -77,9 +77,8 @@ En este caso, al tener una variable cuantitativa (las horas en RRSS), y una bina
 ```{r}
 cor.test(datos_RRSS$horas_redes_dia, datos_RRSS$FOMO_numerico)
 ```
-
-## Segunda correlación
 Podemos ver que la correlación es bastante crecana a $0$, por tanto, no hay correlación aparente entre la cantidad de horas gastadas en las redes sociales y la experimentación de FOMO.\\
+## Segunda correlación
 Ahora nos interesa ver si hay relación entre las horas en RRSS con cuanto creen los individuos observados que las RRSS afectan su vida. Para ello graficaremos los resultados:
 ```{r}
 ggplot(datos_RRSS, aes(x = limitacion_activa, y = horas_redes_dia)) +
@@ -93,5 +92,17 @@ Vemos que aparentemente en esta simulación, las horas están distribuidas homog
 anova1 = aov(horas_redes_dia ~ frecuencia_afectacion_diaria, data = datos_RRSS)
 summary(anova1)
 ```
-Como vemos, el p-valor es $0.604$, que es bastante más que nuestro nivel de significancia. De aquí se puede deducir, como ya mostraba el boxplot, que no hay relación entre la cantidad de horas gastadas en RRSS y como le afectan las RRSS a cada individuo en su vida diaria.
+Como vemos, el p-valor es $0.604$, que es bastante más que nuestro nivel de significancia. De aquí se puede deducir, como ya mostraba el boxplot, que no hay relación entre la cantidad de horas gastadas en RRSS y como le afectan las RRSS a cada individuo en su vida diaria.\\
 
+## Tercera correlación
+Además, vamos a ver la influencia entre si el perfil es público o privado y cuanto se limitan activamente las RRSS. Veamos primero un gráfico de barras:
+```{r}
+ggplot(datos_RRSS, aes(x = privacidad_perfil, fill = limitacion_activa)) +
+  geom_bar(position = "fill") +  
+  labs(x = "Privacidad del Perfil", 
+       y = "Proporción", 
+       fill = "Limitación Activa") +
+  ggtitle("Distribución de Niveles de Limitación Activa por Tipo de Privacidad") +
+  theme_minimal()
+```
+Podemos ver que entre los que tienen un perfil público, tienen cierta tendencia a limitar su consumo de las RRSS de manera regular, pero a su vez, también se observa que dentro de este grupo, hay una cantidad aparentemente significativa de individuos que no se limitan a la hora de consumir dichas redes. Por otra parte, dentro de los que tienen el perfil privado, son menos los que no toman ninguna medida de control. Así mismo, se puede ver que la gran mayoría de individuos sí que han limitado su tiempo en redes, aunque dicha limitación haya sido poca.
