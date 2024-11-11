@@ -11,10 +11,10 @@ library(MASS)
 library(tidyverse)
 ```
 
-## Primer paso
+# Primer paso
 Queremos estudiar como afecta a la salud mental de los universitarios las redes sociales de manera simulada. Para ello a cada individuo le mediremos la cantidad de horas al día que pasa en las RRSS., su edad, la red social más usada y la sensación de estar perdiendo el tiempo entre otras.
 
-## Segundo paso
+# Segundo paso
 Creamos las medias por individuo y la matriz de covarianzas de las variables cuantitativas de la simulación:
 
 ```{r}
@@ -61,7 +61,9 @@ datos_RRSS <- cbind(datos_RRSS_1,datos_RRSS_2)
 head(datos_RRSS)
 ```
 
-## Tercer paso
+# Tercer paso
+
+## Primera correlación
 Lo primero que queremos estudiar es la relación entre la expirementación de FOMO con las horas gastadas en RRSS por cada inidividuo. Para ello, al ser las respuestas a la pregunta sobre el FOMO "Sí" o "No", podemos codificarlas con valores numéricos, es decir, a cada "Sí" le asociamos un $1$ y a cada "No" le asociamos un $0$:
 ```{r}
 datos_RRSS <- datos_RRSS %>%
@@ -75,6 +77,8 @@ En este caso, al tener una variable cuantitativa (las horas en RRSS), y una bina
 ```{r}
 cor.test(datos_RRSS$horas_redes_dia, datos_RRSS$FOMO_numerico)
 ```
+
+## Segunda correlación
 Podemos ver que la correlación es bastante crecana a $0$, por tanto, no hay correlación aparente entre la cantidad de horas gastadas en las redes sociales y la experimentación de FOMO.\\
 Ahora nos interesa ver si hay relación entre las horas en RRSS con cuanto creen los individuos observados que las RRSS afectan su vida. Para ello graficaremos los resultados:
 ```{r}
@@ -84,6 +88,10 @@ ggplot(datos_RRSS, aes(x = limitacion_activa, y = horas_redes_dia)) +
        title = "Distribución de Horas en Redes Sociales según Frecuencia de Afectación Diaria") +
   theme_minimal()
 ```
-Vemos que aparentemente en esta simulación, las horas están distribuidas homogéneamente entre las distintas categorías, dando a entender que tampoco podemos asegurar una correlación en este caso.
-
+Vemos que aparentemente en esta simulación, las horas están distribuidas homogéneamente entre las distintas categorías, dando a entender que tampoco podemos asegurar una correlación en este caso. De igual manera realizaremos un test ANOVA tomando un nivel de significancia del $0.05$ para ver si esto es cierto.
+```{r}
+anova1 = aov(horas_redes_dia ~ frecuencia_afectacion_diaria, data = datos_RRSS)
+summary(anova1)
+```
+Como vemos, el p-valor es $0.604$, que es bastante más que nuestro nivel de significancia. De aquí se puede deducir, como ya mostraba el boxplot, que no hay relación entre la cantidad de horas gastadas en RRSS y como le afectan las RRSS a cada individuo en su vida diaria.
 
