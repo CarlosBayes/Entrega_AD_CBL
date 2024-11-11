@@ -84,6 +84,6 @@ ggplot(datos_RRSS, aes(x = limitacion_activa, y = horas_redes_dia)) +
        title = "Distribución de Horas en Redes Sociales según Frecuencia de Afectación Diaria") +
   theme_minimal()
 ```
-
+Vemos que aparentemente en esta simulación, las horas están distribuidas homogéneamente entre las distintas categorías, dando a entender que tampoco podemos asegurar una correlación en este caso.
 
 
