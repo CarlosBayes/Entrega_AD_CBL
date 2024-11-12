@@ -9,6 +9,7 @@ Rendering:
 ```{r}
 library(MASS)
 library(tidyverse)
+library(Hotelling)
 ```
 
 # Primer paso
@@ -165,3 +166,26 @@ score <- predict(modelo_rl, newdata = datos_fijos)
 print(score)
 ```
 Este resultado nos quiere decir que lo más probable es que un individuo con los parámetros cercanos a los fijados pase al día entorno a unas $5$ horas y $20$ minutos en redes sociales. Poder calcular las horas diarias estimadas en RRSS de esta manera es bastante interesante, ya que se puede dar una predicción más o menos fiable con ciertas características del perfil de cada individuo y su edad.
+
+# Sexto paso
+Realizaremos el siguiente contraste de hipótesis:\\
+Tomaremos como hipótesis nula $H_0$ que las medias de las horas en redes al día, la cantidad de seguidores y la cantidad de publicaciones son la misma para los perfiles públicos que para los privados. Por tanto nuestra hipótesis alternativa $H_1$ será que al menos una de estas medias difiere para cada tipo de perfil. Para el cálculo, lo primero que haremos será dividir los datos en perfiles públicos y en perfiles privados:
+```{r}
+datos_publico <- datos_RRSS %>% filter(privacidad_perfil == "Público") %>% select(horas_redes_dia, cantidad_seguidores, cantidad_publicaciones)
+datos_privado <- datos_RRSS %>% filter(privacidad_perfil == "Privado") %>% select(horas_redes_dia, cantidad_seguidores, cantidad_publicaciones)
+head(datos_publico)
+head(datos_privado)
+```
+Una vez hechos los dos grupos, realizaremos el test de Hotelling:
+```{r}
+hotelling_prueba <- hotelling.test(datos_publico, datos_privado)
+print(hotelling_prueba)
+```
+Podemos ver que el p-valor es mayor a $0.05$, por lo que aceptamos la hipótesis nula, es decir, las medias de las variables estudiadas no dependen significativamente de si el perfil es público o privado.
+
+# Conclusiones 
+
+# Bibliografía
+ - Apuntes de la asignatura de Análisis de Datos\\
+ - Encuesta estadística realizada por Albert Moya, Miquel Rivas y Carlos Bayés\\
+ - apredeR I y aprendeR II
