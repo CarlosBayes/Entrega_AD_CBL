@@ -6,6 +6,7 @@ editor: visual
 Rendering:
     embed-resources: true
 ---
+
 ```{r}
 library(MASS)
 library(tidyverse)
@@ -13,9 +14,11 @@ library(Hotelling)
 ```
 
 # Primer paso
-Queremos estudiar como afecta a la vida diaria de los universitarios las redes sociales de manera simulada. Para ello, a cada individuo le mediremos la cantidad de horas al día que pasa en las RRSS, su edad, la cantidad de seguidores promedio en las redes sociales, la cantidad de publicaciones en las redes, el sexo de los individuos, la red social más usada, la frecuencia con la que se publica en redes, la limitación del tiempo en RRSS de cada individuo de manera consciente y la frecuencia con la que creen losindividuos que las redes afectan en su vida. Se recalca que la mayoría de los datos están simulados por R, así que estos no tienen por qué corresponderse con la realidad, aunque las conclusiones se harán como si se tratase de la realidad. Además, debido a la longitud del proyecto se aclara que no se harán todos los estudios de correlación y análisis multivariante posibles debido a la gran cantidad de variables. En este estudio se han realizado, en concreto, $3$ análisis, que se consideran los más interesantes a nivel subjetivo. La motivación de dichos análisis viene explicada con cada uno en la sección $Tercer paso$. 
+
+Queremos estudiar como afecta a la vida diaria de los universitarios las redes sociales de manera simulada. Para ello, a cada individuo le mediremos la cantidad de horas al día que pasa en las RRSS, su edad, la cantidad de seguidores promedio en las redes sociales, la cantidad de publicaciones en las redes, el sexo de los individuos, la red social más usada, la frecuencia con la que se publica en redes, la limitación del tiempo en RRSS de cada individuo de manera consciente y la frecuencia con la que creen losindividuos que las redes afectan en su vida. Se recalca que la mayoría de los datos están simulados por R, así que estos no tienen por qué corresponderse con la realidad, aunque las conclusiones se harán como si se tratase de la realidad. Además, debido a la longitud del proyecto se aclara que no se harán todos los estudios de correlación y análisis multivariante posibles debido a la gran cantidad de variables. En este estudio se han realizado, en concreto, $3$ análisis, que se consideran los más interesantes a nivel subjetivo. La motivación de dichos análisis viene explicada con cada uno en la sección "Tercer paso".
 
 # Segundo paso
+
 Creamos las medias por individuo y la matriz de covarianzas de las variables cuantitativas de la simulación:
 
 ```{r}
@@ -28,12 +31,14 @@ covarianza <- matrix(c(4, 2, 10, 1,
 ```
 
 Ahora creamos la distribución tal y como pide el enunciado:
+
 ```{r}
 set.seed(42)
 datos_numericos <- mvrnorm(150, mu = media, Sigma = covarianza)
 ```
 
 Con esto, construimos la primera tabla de datos:
+
 ```{r}
 datos_RRSS_1 <- data.frame(
   horas_redes_dia = round(datos_numericos[,1]),
@@ -49,15 +54,18 @@ datos_RRSS_1 <- data.frame(
 head(datos_RRSS_1)
 ```
 
-Ahora creamos la segunda tabla. Al no encontrar datos en internet que se ajusten adecuadamente a la simulación que se propone, se hará uso de una encuesta realizada en la UIB el curso pasado a modo de proyecto para la asignatura de "Estadística", que trataba temas similares y en la que está inspirada esta misma práctica. La encuesta fue realizada por un equipo al cual el autor (Carlos Bayés) pertenecía, con lo cual no se están usando dichos datos de manera ilícita. Dicho esto, tomaremos las variables de las preguntas sobre los sentimientos FOMO y sobre si los perfiles en RRSS de los individuos son públicos o privados. Creémosla:\\
+Ahora creamos la segunda tabla. Al no encontrar datos en internet que se ajusten adecuadamente a la simulación que se propone, se hará uso de una encuesta realizada en la UIB el curso pasado a modo de proyecto para la asignatura de "Estadística", que trataba temas similares y en la que está inspirada esta misma práctica. La encuesta fue realizada por un equipo al cual el autor (Carlos Bayés) pertenecía, con lo cual no se están usando dichos datos de manera ilícita. Dicho esto, tomaremos las variables de las preguntas sobre los sentimientos FOMO y sobre si los perfiles en RRSS de los individuos son públicos o privados. Creémosla:\
 (Aclaración: El FOMO, "Fear Of Missing Out" en inglés, es el miedo a perderse eventos en la vida, lo que conlleva a la sensación de no estar aprovechando el tiempo. Esto es de interés medirlo ya que al ver lo que está subido en perfiles de otras personas, podemos caer en estos sentimientos, ya que, por lo general, la gente únicamente proyecta la parte buena de su vida en redes.)
+
 ```{r}
 datos_tabla2 <- read.csv("C:/Users/34663/Desktop/Entrega_AD_CBL/Copia de El Rol de las Redes Sociales en la Salud Mental (respuestas) - Respuestas de formulario 1.csv")
 datos_RRSS_2 <- datos_tabla2[1:150, c("X.Has.experimentado.alguna.vez.sentimientos.de.FOMO..miedo.a.perderse.algo..al.ver.las.publicaciones.de.otras.personas.en.redes.sociales.", "En.la.red.social.que.más.seguidores.tengas...tu.perfil.es.público.o.privado.")]
 colnames(datos_RRSS_2) <- c("experimentacion_FOMO", "privacidad_perfil")
 head(datos_RRSS_2)
 ```
+
 A partir de estas dos tablas creadas, crearemos la tabla a partir de la cual realizaremos el estudio estadístico:
+
 ```{r}
 datos_RRSS <- cbind(datos_RRSS_1,datos_RRSS_2)
 head(datos_RRSS)
@@ -66,7 +74,9 @@ head(datos_RRSS)
 # Tercer paso
 
 ## Primera correlación
+
 Lo primero que queremos estudiar es la relación entre la expirementación de FOMO con las horas gastadas en RRSS por cada inidividuo. Esto es de interés ya que nos permite ver hasta qué punto, el tiempo de consumo de RRSS influye en una parte de la salud mental de los individuos. Para ello, al ser las respuestas a la pregunta sobre el FOMO "Sí" o "No", podemos codificarlas con valores numéricos, es decir, a cada "Sí" le asociamos un $1$ y a cada "No" le asociamos un $0$:
+
 ```{r}
 datos_RRSS <- datos_RRSS %>%
   mutate(FOMO_numerico = case_when(
@@ -76,12 +86,17 @@ datos_RRSS <- datos_RRSS %>%
 ```
 
 En este caso, al tener una variable cuantitativa (las horas en RRSS), y una binaria, (la experimentación del FOMO), un test de correlación se ajusta a nuestras necesidades, ya que son dos variables cuantitativas:
+
 ```{r}
 cor.test(datos_RRSS$horas_redes_dia, datos_RRSS$FOMO_numerico)
 ```
-Podemos ver que la correlación es bastante crecana a $0$, por tanto, no hay correlación aparente entre la cantidad de horas gastadas en las redes sociales y la experimentación de FOMO.\\
+
+Podemos ver que la correlación es bastante crecana a $0$, por tanto, no hay correlación aparente entre la cantidad de horas gastadas en las redes sociales y la experimentación de FOMO.\
+
 ## Segunda correlación
+
 Ahora nos interesa ver si hay relación entre las horas en RRSS con cuanto creen los individuos observados que las RRSS afectan su vida. La motivación de estudiar dicaha relación viene dada por razones similares a las de la correlación anterior; cuál es el grado en el que los individuos creen que las RRSS influyen en su vida. Para ello graficaremos los resultados:
+
 ```{r}
 ggplot(datos_RRSS, aes(x = limitacion_activa, y = horas_redes_dia)) +
   geom_boxplot(fill = "skyblue", color = "darkblue") +
@@ -89,15 +104,20 @@ ggplot(datos_RRSS, aes(x = limitacion_activa, y = horas_redes_dia)) +
        title = "Distribución de Horas en Redes Sociales según Frecuencia de Afectación Diaria") +
   theme_minimal()
 ```
+
 Vemos que aparentemente en esta simulación, las horas están distribuidas homogéneamente entre las distintas categorías, dando a entender que tampoco podemos asegurar una correlación en este caso. De igual manera realizaremos un test ANOVA tomando un nivel de significancia del $0.05$ para ver si esto es cierto, al estar tratando con una variable cuantitativa y otra categórica.
+
 ```{r}
 anova1 = aov(horas_redes_dia ~ frecuencia_afectacion_diaria, data = datos_RRSS)
 summary(anova1)
 ```
-Como vemos, el p-valor es $0.604$, que es bastante más que nuestro nivel de significancia. De aquí se puede deducir, como ya mostraba el boxplot, que no hay relación entre la cantidad de horas gastadas en RRSS y como le afectan las RRSS a cada individuo en su vida diaria.\\
+
+Como vemos, el p-valor es $0.604$, que es bastante más que nuestro nivel de significancia. De aquí se puede deducir, como ya mostraba el boxplot, que no hay relación entre la cantidad de horas gastadas en RRSS y como le afectan las RRSS a cada individuo en su vida diaria.\
 
 ## Tercera correlación
+
 Además, vamos a ver la influencia entre si el perfil es público o privado y cuanto se limitan activamente las RRSS. La intención de este punto es ver si las personas que mantienen su perfil en redes privado tratan de que las redes no le afecten o le afecten menos en su defecto en comparación a las personas con un perfil público. A su vez también se puede ver la si hay una tendencia entre los individuos en genral de tomar medidas contra gastar demasiado tiempo en redes sociales. Veamos primero un gráfico de barras:
+
 ```{r}
 ggplot(datos_RRSS, aes(x = privacidad_perfil, fill = limitacion_activa)) +
   geom_bar(position = "fill") +  
@@ -107,13 +127,17 @@ ggplot(datos_RRSS, aes(x = privacidad_perfil, fill = limitacion_activa)) +
   ggtitle("Distribución de Niveles de Limitación Activa por Tipo de Privacidad") +
   theme_minimal()
 ```
+
 Podemos ver que entre los que tienen un perfil público, tienen cierta tendencia a limitar su consumo de las RRSS de manera regular, pero a su vez, también se observa que dentro de este grupo, hay una cantidad aparentemente significativa de individuos que no se limitan a la hora de consumir dichas redes. Por otra parte, dentro de los que tienen el perfil privado, son menos los que no toman ninguna medida de control. Así mismo, se puede ver que la gran mayoría de individuos sí que han limitado su tiempo en redes, aunque dicha limitación haya sido poca. Aún así, al tratarse de dos variables categóricas, realizaremos un test de independencia chi cuadrado:
+
 ```{r}
 tabla_contingencia_1 <- table(datos_RRSS$privacidad_perfil, datos_RRSS$limitacion_activa)
 print(tabla_contingencia_1)
 chisq.test(tabla_contingencia_1)
 ```
+
 Vemos que el p-valor es mayor que $0.05$, lo que quiere decir que aparentemente no existe relación significativa entre el tipo de perfil y las medidas de limitación de consumo de RRSS. De igual manera, es interesante separar a los individuos entre los que nunca han tomado alguna medida limitante y los que no. Para ello creemos otra columna en datos_RRSS que realice dicha clasificación:
+
 ```{r}
 datos_RRSS <- datos_RRSS %>%
   mutate(limitacion_alguna_vez = case_when(
@@ -124,39 +148,52 @@ datos_RRSS <- datos_RRSS %>%
     limitacion_activa == "Muy frecuente" ~ "Sí",
   ))
 ```
+
 Una vez creada la columna, realizamos el test:
+
 ```{r}
 tabla_contingencia_2 <- table(datos_RRSS$privacidad_perfil, datos_RRSS$limitacion_alguna_vez)
 print(tabla_contingencia_2)
 chisq.test(tabla_contingencia_2)
 ```
+
 Como vemos, el p-valor en este caso es $0.4894$, que sigue siendo mayor a $0.05$, por tanto, aún con esta clasificación, podemos asegurar que no existe una relación significativa entre haber tomado alguna medida de limitación de consumo y el tipo de perfil de cada idividuo.
 
 # Cuarto paso
+
 La intención es modelizar la variable red_mas_usada.Primero calculemos las proporciones de cada categoría de la variable:
+
 ```{r}
 proporciones_red <- datos_RRSS %>% count(red_mas_usada) %>% mutate(probabilidad = n / sum(n))
 ```
+
 Vamos a tomar las 20 primeras observaciones de la tabla datos_RRSS y ver la frecuencia de cada categoría de la variable de estas 20 observaciones:
+
 ```{r}
 datos_RRSS_primeras20 <- datos_RRSS %>% slice(1:20)
 conteo_frecuencias <- datos_RRSS_primeras20 %>% count(red_mas_usada) %>% pull(n)
 ```
+
 Ahora tomamos las probabilidades de cada categoría y construimos la distribución:
+
 ```{r}
 probabilidades <- proporciones_red$probabilidad
 distribucion <- dmultinom(x = conteo_frecuencias, prob = probabilidades)
 print(distribucion)
 ```
+
 Como vemos, el resultado es muy cercano a 0, lo que significa que es muy poco probable que en una muestra de 20 personas se den las mismas proporciones que en la muestra total, lo que quiere decir que las redes sociales preferidas de los individuos varían segú el tamaño de la muestra.
 
 # Quinto paso
+
 Queremos estudiar como varía las horas en redes sociales en función de la edad, la cantidad de seguidores y la cantidad de publicaciones. Para ello crearemos un modelo de regresión lineal:
+
 ```{r}
 modelo_rl <- lm(horas_redes_dia ~ edad + cantidad_seguidores + cantidad_publicaciones, data = datos_RRSS)
 summary(modelo_rl)
 ```
-Como vemos, si tomamos $Y = horas\_redes\_dia, X_1 = edad, X_2 = cantidad\_seguidores, X_3 = cantidad\_pulicaciones$, el modelo de regresión lineal nos queda: $Y = -59.39117 + 0.21758X_1 +  0.17368 X_2 + -0.07051X_3 + \epsilon$. De aquí podemos deducir que, al ser los coeficientes de las variables que hemos considerado independientes relativamente cercanos a $0$, la cantidad de horas al día en RRSS de cada individuo, por lo general, no dependen mucho del resto de variables ordinales. Aún así, al ser los coeficientes de $X_1$ y $X_2$ positivos, podemos decir que la edad y la cantidad de seguidores son directamente proporcionales a las horas gastadas en redes. Por el contrario, la cantidad de publicaciones presenta una proporcionalidad inversa, lo que es contradictorio, ya que para publicar más se debería de invertir más tiempo, al menos de manera intuitiva parece ser así.\\
+
+Como vemos, si tomamos $Y = horas\_redes\_dia, X_1 = edad, X_2 = cantidad\_seguidores, X_3 = cantidad\_pulicaciones$, el modelo de regresión lineal nos queda: $Y = -59.39117 + 0.21758X_1 +  0.17368 X_2 + -0.07051X_3 + \epsilon$. De aquí podemos deducir que, al ser los coeficientes de las variables que hemos considerado independientes relativamente cercanos a $0$, la cantidad de horas al día en RRSS de cada individuo, por lo general, no dependen mucho del resto de variables ordinales. Aún así, al ser los coeficientes de $X_1$ y $X_2$ positivos, podemos decir que la edad y la cantidad de seguidores son directamente proporcionales a las horas gastadas en redes. Por el contrario, la cantidad de publicaciones presenta una proporcionalidad inversa, lo que es contradictorio, ya que para publicar más se debería de invertir más tiempo, al menos de manera intuitiva parece ser así.\
 
 Para visualizar esto mejor, podemos dar edad, cantidad de seguidores y cantidad de publicaciones fijas, y calcular el score de las horas en redes según estos parámetros. El score viene a ser el valor estimado de las horas en redes al día según los parámetros fijados que hemos dado. Vayamos a calcularlo para alguien de $25$ años, $500$ seguidores y $30$ publicaciones:
 
@@ -165,27 +202,34 @@ datos_fijos <- data.frame(edad = 22, cantidad_seguidores = 350, cantidad_publica
 score <- predict(modelo_rl, newdata = datos_fijos)
 print(score)
 ```
+
 Este resultado nos quiere decir que lo más probable es que un individuo con los parámetros cercanos a los fijados pase al día entorno a unas $5$ horas y $20$ minutos en redes sociales. Poder calcular las horas diarias estimadas en RRSS de esta manera es bastante interesante, ya que se puede dar una predicción más o menos fiable con ciertas características del perfil de cada individuo y su edad.
 
 # Sexto paso
-Realizaremos el siguiente contraste de hipótesis:\\
+
+Realizaremos el siguiente contraste de hipótesis:\
 Tomaremos como hipótesis nula $H_0$ que las medias de las horas en redes al día, la cantidad de seguidores y la cantidad de publicaciones son la misma para los perfiles públicos que para los privados. Por tanto nuestra hipótesis alternativa $H_1$ será que al menos una de estas medias difiere para cada tipo de perfil. Para el cálculo, lo primero que haremos será dividir los datos en perfiles públicos y en perfiles privados:
+
 ```{r}
 datos_publico <- datos_RRSS %>% filter(privacidad_perfil == "Público") %>% select(horas_redes_dia, cantidad_seguidores, cantidad_publicaciones)
 datos_privado <- datos_RRSS %>% filter(privacidad_perfil == "Privado") %>% select(horas_redes_dia, cantidad_seguidores, cantidad_publicaciones)
 head(datos_publico)
 head(datos_privado)
 ```
+
 Una vez hechos los dos grupos, realizaremos el test de Hotelling:
+
 ```{r}
 hotelling_prueba <- hotelling.test(datos_publico, datos_privado)
 print(hotelling_prueba)
 ```
+
 Podemos ver que el p-valor es mayor a $0.05$, por lo que aceptamos la hipótesis nula, es decir, las medias de las variables estudiadas no dependen significativamente de si el perfil es público o privado.
 
-# Conclusiones 
+# Conclusiones
 
 # Bibliografía
- - Apuntes de la asignatura de Análisis de Datos\\
- - Encuesta estadística realizada por Albert Moya, Miquel Rivas y Carlos Bayés\\
- - apredeR I y aprendeR II
+
+-   Apuntes de la asignatura de Análisis de Datos\
+-   Encuesta estadística realizada por Albert Moya, Miquel Rivas y Carlos Bayés\
+-   apredeR I y aprendeR II
