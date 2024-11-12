@@ -147,4 +147,12 @@ probabilidades <- proporciones_red$probabilidad
 distribucion <- dmultinom(x = conteo_frecuencias, prob = probabilidades)
 print(distribucion)
 ```
+Como vemos, el resultado es muy cercano a 0, lo que significa que es muy poco probable que en una muestra de 20 personas se den las mismas proporciones que en la muestra total, lo que quiere decir que las redes sociales preferidas de los individuos varían segú el tamaño de la muestra.
+
 # Quinto paso
+Queremos estudiar como varía las horas en redes sociales en función de la edad, la cantidad de seguidores y la cantidad de publicaciones. Para ello crearemos un modelo de regresión lineal:
+```{r}
+modelo_rl <- lm(horas_redes_dia ~ edad + cantidad_seguidores + cantidad_publicaciones, data = datos_RRSS)
+summary(modelo_rl)
+```
+Como vemos, si tomamos $Y = horas\_redes\_dia, X_1 = edad, X_2 = cantidad\_seguidores, X_3 = cantidad\_pulicaciones$, el modelo de regresión lineal nos queda: $Y = -59.39117 + 0.21758X_1 +  0.17368 X_2 + -0.07051X_3 + \epsilon$. De aquí podemos deducir que, al ser los coeficientes de las variables que hemos considerado independientes relativamente cercanos a $0$, la cantidad de horas al día en RRSS de cada individuo, por lo general, no dependen mucho del resto de variables ordinales. Aún así, al ser los coeficientes de $X_1$ y $X_2$ positivos, podemos decir que la edad y la cantidad de seguidores son directamente proporcionales a las horas gastadas en redes. Por el contrario, la cantidad de publicaciones presenta una proporcionalidad inversa, lo que es contradictorio, ya que para publicar más se debería de invertir más tiempo, al menos de manera intuitiva parece ser así.
