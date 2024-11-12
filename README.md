@@ -1,1 +1,1 @@
-# Entrega_AD_CBL
+Entrega para repasar el primer examen parcial de Análisis de Datos hecha por Carlos Bayés
