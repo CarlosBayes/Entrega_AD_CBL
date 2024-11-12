@@ -155,4 +155,13 @@ Queremos estudiar como varía las horas en redes sociales en función de la edad
 modelo_rl <- lm(horas_redes_dia ~ edad + cantidad_seguidores + cantidad_publicaciones, data = datos_RRSS)
 summary(modelo_rl)
 ```
-Como vemos, si tomamos $Y = horas\_redes\_dia, X_1 = edad, X_2 = cantidad\_seguidores, X_3 = cantidad\_pulicaciones$, el modelo de regresión lineal nos queda: $Y = -59.39117 + 0.21758X_1 +  0.17368 X_2 + -0.07051X_3 + \epsilon$. De aquí podemos deducir que, al ser los coeficientes de las variables que hemos considerado independientes relativamente cercanos a $0$, la cantidad de horas al día en RRSS de cada individuo, por lo general, no dependen mucho del resto de variables ordinales. Aún así, al ser los coeficientes de $X_1$ y $X_2$ positivos, podemos decir que la edad y la cantidad de seguidores son directamente proporcionales a las horas gastadas en redes. Por el contrario, la cantidad de publicaciones presenta una proporcionalidad inversa, lo que es contradictorio, ya que para publicar más se debería de invertir más tiempo, al menos de manera intuitiva parece ser así.
+Como vemos, si tomamos $Y = horas\_redes\_dia, X_1 = edad, X_2 = cantidad\_seguidores, X_3 = cantidad\_pulicaciones$, el modelo de regresión lineal nos queda: $Y = -59.39117 + 0.21758X_1 +  0.17368 X_2 + -0.07051X_3 + \epsilon$. De aquí podemos deducir que, al ser los coeficientes de las variables que hemos considerado independientes relativamente cercanos a $0$, la cantidad de horas al día en RRSS de cada individuo, por lo general, no dependen mucho del resto de variables ordinales. Aún así, al ser los coeficientes de $X_1$ y $X_2$ positivos, podemos decir que la edad y la cantidad de seguidores son directamente proporcionales a las horas gastadas en redes. Por el contrario, la cantidad de publicaciones presenta una proporcionalidad inversa, lo que es contradictorio, ya que para publicar más se debería de invertir más tiempo, al menos de manera intuitiva parece ser así.\\
+
+Para visualizar esto mejor, podemos dar edad, cantidad de seguidores y cantidad de publicaciones fijas, y calcular el score de las horas en redes según estos parámetros. El score viene a ser el valor estimado de las horas en redes al día según los parámetros fijados que hemos dado. Vayamos a calcularlo para alguien de $25$ años, $500$ seguidores y $30$ publicaciones:
+
+```{r}
+datos_fijos <- data.frame(edad = 22, cantidad_seguidores = 350, cantidad_publicaciones = 12)
+score <- predict(modelo_rl, newdata = datos_fijos)
+print(score)
+```
+Este resultado nos quiere decir que lo más probable es que un individuo con los parámetros cercanos a los fijados pase al día entorno a unas $5$ horas y $20$ minutos en redes sociales. Poder calcular las horas diarias estimadas en RRSS de esta manera es bastante interesante, ya que se puede dar una predicción más o menos fiable con ciertas características del perfil de cada individuo y su edad.
