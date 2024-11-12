@@ -95,7 +95,7 @@ Podemos ver que la correlación es bastante crecana a $0$, por tanto, no hay cor
 
 ## Segunda correlación
 
-Ahora nos interesa ver si hay relación entre las horas en RRSS con cuanto creen los individuos observados que las RRSS afectan su vida. La motivación de estudiar dicaha relación viene dada por razones similares a las de la correlación anterior; cuál es el grado en el que los individuos creen que las RRSS influyen en su vida. Para ello graficaremos los resultados:
+Ahora nos interesa ver si hay relación entre las horas en RRSS con cuanto creen los individuos observados que las RRSS afectan su vida. La motivación de estudiar dicha relación viene dada por razones similares a las de la correlación anterior; cuál es el grado en el que los individuos creen que las RRSS influyen en su vida. Para ello graficaremos los resultados:
 
 ```{r}
 ggplot(datos_RRSS, aes(x = limitacion_activa, y = horas_redes_dia)) +
@@ -161,7 +161,7 @@ Como vemos, el p-valor en este caso es $0.4894$, que sigue siendo mayor a $0.05$
 
 # Cuarto paso
 
-La intención es modelizar la variable red_mas_usada.Primero calculemos las proporciones de cada categoría de la variable:
+La intención es modelizar la variable red_mas_usada. Primero calculemos las proporciones de cada categoría de la variable:
 
 ```{r}
 proporciones_red <- datos_RRSS %>% count(red_mas_usada) %>% mutate(probabilidad = n / sum(n))
@@ -227,6 +227,11 @@ print(hotelling_prueba)
 Podemos ver que el p-valor es mayor a $0.05$, por lo que aceptamos la hipótesis nula, es decir, las medias de las variables estudiadas no dependen significativamente de si el perfil es público o privado.
 
 # Conclusiones
+
+Para finalizar el estudio estadístico, realizaremos un resumen de lo que se puede concluir a través de los análisis hechos en los distintos pasos.\
+- Tercer paso: Gracias a estos cálculos hemos podido ver que el tiempo que pasa cada individuo en RRSS no tiene que ver con experimentar FOMO ni con como perciben los individuos que las RRSS influyen en su vida, además de ver que la privacidad del perfil no tiene que ver con como se restrigen los individuos el uso de sus redes sociales. Esto indica que el grado en el que las redes influyen en sus vidas diarias tiene más que ver con las tendencias psicológicas y el carácter de cada persona que con el uso de las redes en sí, por lo menos en lo que al FOMO y las restricciones de uso respecta.\
+- Cuarto paso: De aquí podemos concluir que la red social que prefieren los individuos depende del tamaño de la muestra y de los individuos en sí, dando a entender que no hay ninguna preferencia en cuanto a que red utilizar.\
+- Sexto paso: Finalmente, de este paso podemos sacar que la privacidad del perfil no depende de las horas en redes, ni los seguidores, ni las publicaciones. Esto da a entender que la privacidad es más una preferencia personal que no una característica que venga dada por como cada uno usa sus redes.
 
 # Bibliografía
 
