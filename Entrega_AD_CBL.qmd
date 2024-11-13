@@ -13,6 +13,8 @@ library(tidyverse)
 library(Hotelling)
 ```
 
+[Enlace al GitHub del proyecto](https://github.com/CarlosBayes/Entrega_AD_CBL)
+
 # Primer paso
 
 Queremos estudiar como afecta a la vida diaria de los universitarios las redes sociales de manera simulada. Para ello, a cada individuo le mediremos la cantidad de horas al día que pasa en las RRSS, su edad, la cantidad de seguidores promedio en las redes sociales, la cantidad de publicaciones en las redes, el sexo de los individuos, la red social más usada, la frecuencia con la que se publica en redes, la limitación del tiempo en RRSS de cada individuo de manera consciente y la frecuencia con la que creen los individuos que las redes afectan en su vida. Se recalca que la mayoría de los datos están simulados por R, así que estos no tienen por qué corresponderse con la realidad, aunque las conclusiones se harán como si se tratase de esta. Además, debido a la longitud del proyecto se aclara que no se harán todos los estudios de correlación y análisis multivariante posibles debido a la gran cantidad de variables. En este estudio se han realizado, en concreto, $3$ análisis, que se consideran los más interesantes a nivel subjetivo. La motivación de dichos análisis viene explicada con cada uno en la sección "Tercer paso".
